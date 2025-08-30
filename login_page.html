@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Thiago Aggio</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #2c3e50;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5em;
+            color: #6a0dad;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #ff4500;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #6a0dad;
+            color: #ffffff;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #ff4500;
+        }
+
+        #toggle-form {
+            background: none;
+            color: #00bcd4;
+            text-decoration: underline;
+            font-size: 0.9em;
+            margin-top: 20px;
+            font-weight: normal;
+        }
+
+        #message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .error {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+
+        .success {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1 id="form-title">Faça Login</h1>
+        <p id="form-subtitle">Bem-vindo(a) de volta ao Virality Scout AI!</p>
+        
+        <div id="login-form">
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" placeholder="seuemail@exemplo.com">
+            </div>
+            <div class="form-group">
+                <label for="login-password">Senha</label>
+                <input type="password" id="login-password" placeholder="Sua senha">
+            </div>
+            <button id="login-button">Entrar</button>
+        </div>
+
+        <div id="register-form" style="display:none;">
+            <div class="form-group">
+                <label for="register-email">Email</label>
+                <input type="email" id="register-email" placeholder="seuemail@exemplo.com">
+            </div>
+            <div class="form-group">
+                <label for="register-password">Senha</label>
+                <input type="password" id="register-password" placeholder="Sua senha">
+            </div>
+            <button id="register-button">Cadastrar</button>
+        </div>
+
+        <button id="toggle-form">Ainda não tem uma conta? Cadastre-se</button>
+        <div id="message"></div>
+    </div>
+
+    <!-- Scripts do Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
+
+    <script>
+        // Configuração do Firebase
+        // IMPORTANTE: Substitua as chaves abaixo pelas suas
+        const firebaseConfig = {
+            apiKey: "SEU_API_KEY",
+            authDomain: "SEU_AUTH_DOMAIN",
+            projectId: "SEU_PROJECT_ID",
+            storageBucket: "SEU_STORAGE_BUCKET",
+            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
+
+        // Inicializa o Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Elementos do HTML
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const toggleButton = document.getElementById('toggle-form');
+        const formTitle = document.getElementById('form-title');
+        const formSubtitle = document.getElementById('form-subtitle');
+        const messageDiv = document.getElementById('message');
+
+        // Botões de Ação
+        const loginButton = document.getElementById('login-button');
+        const registerButton = document.getElementById('register-button');
+        
+        // Alterna entre os formulários de Login e Cadastro
+        toggleButton.addEventListener('click', () => {
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                formTitle.textContent = 'Faça Login';
+                formSubtitle.textContent = 'Bem-vindo(a) de volta ao Virality Scout AI!';
+                toggleButton.textContent = 'Ainda não tem uma conta? Cadastre-se';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                formTitle.textContent = 'Crie sua Conta';
+                formSubtitle.textContent = 'Comece a usar o Virality Scout AI agora!';
+                toggleButton.textContent = 'Já tem uma conta? Faça login';
+            }
+            hideMessage();
+        });
+
+        // Lógica de Login
+        loginButton.addEventListener('click', async () => {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showMessage('Login bem-sucedido! Redirecionando...', 'success');
+                setTimeout(() => {
+                    // Redireciona o usuário após o login
+                    window.location.href = 'https://viralityscoutai.netlify.app/';
+                }, 2000);
+            } catch (error) {
+                showMessage(`Erro no login: ${getErrorMessage(error.code)}`, 'error');
+            }
+        });
+
+        // Lógica de Cadastro
+        registerButton.addEventListener('click', async () => {
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            try {
+                await auth.createUserWithEmailAndPassword(email, password);
+                showMessage('Cadastro bem-sucedido! Redirecionando...', 'success');
+                setTimeout(() => {
+                    // Redireciona o usuário após o cadastro
+                    window.location.href = 'https://viralityscoutai.netlify.app/';
+                }, 2000);
+            } catch (error) {
+                showMessage(`Erro no cadastro: ${getErrorMessage(error.code)}`, 'error');
+            }
+        });
+
+        // Funções de Utilitário
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = ''; // Reseta as classes
+            messageDiv.classList.add(type);
+            messageDiv.style.display = 'block';
+        }
+
+        function hideMessage() {
+            messageDiv.style.display = 'none';
+        }
+
+        function getErrorMessage(errorCode) {
+            switch (errorCode) {
+                case 'auth/invalid-email':
+                    return 'Endereço de e-mail inválido.';
+                case 'auth/user-not-found':
+                    return 'Usuário não encontrado. Verifique seu e-mail ou cadastre-se.';
+                case 'auth/wrong-password':
+                    return 'Senha incorreta. Tente novamente.';
+                case 'auth/email-already-in-use':
+                    return 'Este e-mail já está em uso. Faça login ou use outro e-mail.';
+                case 'auth/weak-password':
+                    return 'A senha deve ter no mínimo 6 caracteres.';
+                default:
+                    return 'Ocorreu um erro desconhecido. Tente novamente.';
+            }
+        }
+    </script>
+</body>
+</html>
