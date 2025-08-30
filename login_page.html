@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Virality Scout AI</title>
+    <style>
+        /* Estilos base, cores e fontes */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@600;800&display=swap');
+
+        :root {
+            --primary-color: #6a0dad;
+            --secondary-color: #ff4500;
+            --text-dark: #2c3e50;
+            --text-light: #ecf0f1;
+            --background-light: #f4f7f6;
+            --card-bg: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-box {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .login-box h1 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary-color);
+            font-size: 2.5em;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .login-box button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        #message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .error {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+
+        .success {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1 id="form-title">Faça Login</h1>
+        <p id="form-subtitle">Bem-vindo(a) de volta ao Virality Scout AI!</p>
+        
+        <div id="auth-form">
+            <div class="form-group">
+                <label for="auth-email">Email</label>
+                <input type="email" id="auth-email" placeholder="seuemail@exemplo.com">
+            </div>
+            <div class="form-group">
+                <label for="auth-password">Senha</label>
+                <input type="password" id="auth-password" placeholder="Sua senha">
+            </div>
+            <button id="main-auth-button">Entrar</button>
+        </div>
+
+        <button id="toggle-form">Ainda não tem uma conta? Cadastre-se</button>
+        <div id="message"></div>
+        
+        <button id="google-login-button" style="background-color: #4285F4; color: white; margin-top: 15px;">
+            Login com Google
+        </button>
+    </div>
+
+    <!-- Scripts do Firebase v8.10.1 (versão compatível) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    
+    <script>
+        // Substitua este objeto com a sua configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "SEU_API_KEY",
+            authDomain: "viralityscoutai.firebaseapp.com",
+            projectId: "viralityscoutai",
+            storageBucket: "viralityscoutai.firebasestorage.app",
+            messagingSenderId: "208703936839",
+            appId: "1:208703936839:web:64b8fc868375c4b2711462",
+            measurementId: "G-WK5VQLKRP4"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        const mainAuthButton = document.getElementById('main-auth-button');
+        const authEmail = document.getElementById('auth-email');
+        const authPassword = document.getElementById('auth-password');
+        const toggleButton = document.getElementById('toggle-form');
+        const formTitle = document.getElementById('form-title');
+        const formSubtitle = document.getElementById('form-subtitle');
+        const googleLoginButton = document.getElementById('google-login-button');
+        const messageDiv = document.getElementById('message');
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+        let isLoginMode = true; // Inicia no modo de login
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // Redireciona o usuário para a página do agente se ele estiver logado
+                window.location.href = 'index.html';
+            }
+        });
+
+        toggleButton.addEventListener('click', () => {
+            isLoginMode = !isLoginMode; // Inverte o modo
+            if (isLoginMode) {
+                formTitle.textContent = 'Faça Login';
+                formSubtitle.textContent = 'Bem-vindo(a) de volta ao Virality Scout AI!';
+                mainAuthButton.textContent = 'Entrar';
+                toggleButton.textContent = 'Ainda não tem uma conta? Cadastre-se';
+            } else {
+                formTitle.textContent = 'Crie sua Conta';
+                formSubtitle.textContent = 'Comece a usar o Virality Scout AI agora!';
+                mainAuthButton.textContent = 'Cadastrar';
+                toggleButton.textContent = 'Já tem uma conta? Faça login';
+            }
+        });
+
+        mainAuthButton.addEventListener('click', async () => {
+            const email = authEmail.value;
+            const password = authPassword.value;
+
+            try {
+                if (isLoginMode) {
+                    await auth.signInWithEmailAndPassword(email, password);
+                    showMessage('Login bem-sucedido!', 'success');
+                } else {
+                    await auth.createUserWithEmailAndPassword(email, password);
+                    showMessage('Cadastro bem-sucedido!', 'success');
+                }
+            } catch (error) {
+                showMessage(`Erro: ${getErrorMessage(error.code)}`, 'error');
+            }
+        });
+        
+        googleLoginButton.addEventListener('click', async () => {
+            try {
+                await auth.signInWithPopup(googleProvider);
+                showMessage('Login com Google bem-sucedido!', 'success');
+            } catch (error) {
+                showMessage(`Erro: ${getErrorMessage(error.code)}`, 'error');
+            }
+        });
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = '';
+            messageDiv.classList.add(type);
+            messageDiv.style.display = 'block';
+        }
+
+        function getErrorMessage(errorCode) {
+            switch (errorCode) {
+                case 'auth/invalid-email': return 'Endereço de e-mail inválido.';
+                case 'auth/user-not-found': return 'Usuário não encontrado.';
+                case 'auth/wrong-password': return 'Senha incorreta.';
+                case 'auth/email-already-in-use': return 'Este e-mail já está em uso.';
+                case 'auth/weak-password': return 'A senha deve ter no mínimo 6 caracteres.';
+                case 'auth/account-exists-with-different-credential': return 'Já existe uma conta com este e-mail. Tente fazer login de outra forma.';
+                case 'auth/popup-closed-by-user': return 'A janela de login com Google foi fechada.';
+                default: return 'Ocorreu um erro desconhecido.';
+            }
+        }
+    </script>
+</body>
+</html>
