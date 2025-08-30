@@ -249,7 +249,7 @@
 </head>
 <body>
     <div id="loading-spinner" class="loading-spinner"></div>
-    <div id="login-section" class="login-container hidden">
+    <div id="login-section" class="login-container">
         <div class="login-box">
             <h1 id="form-title">Faça Login</h1>
             <p id="form-subtitle">Bem-vindo(a) de volta ao Virality Scout AI!</p>
@@ -311,11 +311,10 @@
         </footer>
     </div>
 
-    <!-- Scripts do Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
-
-    <!-- Script de Autenticação e Lógica -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
+    
     <script>
         const firebaseConfig = {
             apiKey: "SEU_API_KEY", // Substitua pelas suas chaves
@@ -415,3 +414,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
