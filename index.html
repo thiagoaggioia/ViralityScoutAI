@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Virality Scout AI - Thiago Aggio</title>
     <style>
-        /* Importação das fontes do Google Fonts */
+        /* Estilos base, cores e fontes */
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@600;800&display=swap');
 
         :root {
-            /* Cores do Tema */
             --primary-color: #6a0dad;
             --secondary-color: #ff4500;
             --accent-color: #00bcd4;
@@ -27,6 +26,7 @@
             background-color: var(--background-light);
             color: var(--text-dark);
             line-height: 1.6;
+            transition: filter 0.3s ease;
         }
 
         /* Classes para controle de visualização */
@@ -34,15 +34,18 @@
             display: none !important;
         }
 
-        /* Estilo da Página de Login */
-        .login-container {
+        /* ----- Modal de Login ----- */
+        .login-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            text-align: center;
-            background-color: var(--background-light);
+            z-index: 1000;
         }
 
         .login-box {
@@ -52,29 +55,20 @@
             padding: 40px;
             max-width: 450px;
             width: 90%;
+            text-align: center;
         }
-
+        
         .login-box h1 {
             font-family: 'Poppins', sans-serif;
             color: var(--primary-color);
             font-size: 2.5em;
         }
 
-        .login-box p {
-            color: var(--text-dark);
-        }
-
         .form-group {
             text-align: left;
             margin-bottom: 20px;
         }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
+        
         .form-group input {
             width: 100%;
             padding: 12px;
@@ -82,7 +76,6 @@
             border-radius: 8px;
             font-size: 1em;
             box-sizing: border-box;
-            transition: border-color 0.3s ease;
         }
 
         .login-box button {
@@ -95,7 +88,6 @@
             font-size: 1.2em;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s ease;
             margin-top: 10px;
         }
 
@@ -120,15 +112,14 @@
             background-color: #e8f5e9;
             color: #388e3c;
         }
-        
-        /* Estilo da Página Principal */
+
+        /* ----- Estilos da Página Principal (Conteúdo) ----- */
         .virality-scout-container {
             padding: 20px;
             max-width: 1200px;
             margin: auto;
         }
 
-        /* Cabeçalho */
         .virality-header {
             text-align: center;
             margin-bottom: 40px;
@@ -144,12 +135,6 @@
             text-shadow: 2px 2px 5px var(--shadow-color);
         }
 
-        .virality-header p {
-            font-size: 1.2em;
-            color: var(--text-dark);
-            font-weight: 500;
-        }
-
         .search-section {
             display: flex;
             justify-content: center;
@@ -157,31 +142,23 @@
             margin-top: 25px;
             flex-wrap: wrap;
         }
-
-        .search-section input,
-        .search-section button {
+        
+        .search-section input, .search-section button {
             padding: 12px 18px;
             border: 2px solid var(--primary-color);
             border-radius: 8px;
             font-size: 1.1em;
         }
 
-        .search-section input:focus {
-            border-color: var(--secondary-color);
-            outline: none;
-        }
-        
         .search-section button {
             background-color: var(--secondary-color);
             color: var(--text-light);
             border: none;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
         }
-        
+
         .search-section button:hover {
             background-color: var(--primary-color);
-            transform: translateY(-2px);
         }
 
         .videos-grid {
@@ -196,12 +173,16 @@
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 5px 15px var(--shadow-color);
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
-
+        
+        .video-card:hover {
+            transform: translateY(-8px);
+        }
+        
         .video-card h3 {
             font-family: 'Poppins', sans-serif;
             font-size: 1.6em;
@@ -209,17 +190,16 @@
             margin-top: 0;
             margin-bottom: 15px;
         }
-        
-        .video-card p {
-            font-size: 1em;
-            color: var(--text-dark);
-            margin-bottom: 10px;
-        }
-        
-        .video-card strong {
-            color: var(--secondary-color);
-        }
 
+        .video-thumbnail {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
         .video-card a {
             display: inline-block;
             background-color: var(--accent-color);
@@ -236,20 +216,10 @@
         .video-card a:hover {
             background-color: var(--primary-color);
         }
-
-        .video-thumbnail {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            display: block;
-        }
     </style>
 </head>
 <body>
-    <div id="loading-spinner" class="loading-spinner"></div>
-    <div id="login-section" class="login-container">
+    <div id="login-modal" class="login-modal-overlay hidden">
         <div class="login-box">
             <h1 id="form-title">Faça Login</h1>
             <p id="form-subtitle">Bem-vindo(a) de volta ao Virality Scout AI!</p>
@@ -281,14 +251,13 @@
             <button id="toggle-form">Ainda não tem uma conta? Cadastre-se</button>
             <div id="message"></div>
             
-            <!-- Adicionando o botão de login com o Google -->
             <button id="google-login-button" style="background-color: #4285F4; color: white; margin-top: 15px;">
                 Login com Google
             </button>
         </div>
     </div>
 
-    <div id="content-section" class="virality-scout-container hidden">
+    <div id="content-section" class="virality-scout-container">
         <header class="virality-header">
             <h1>🚀 Virality Scout AI 🚀</h1>
             <p>Descobrindo o que está bombando no YouTube em tempo real!</p>
@@ -297,7 +266,7 @@
                 <input type="number" id="maxResultsInput" placeholder="Nº de vídeos" value="30" min="5" max="50">
                 <button id="searchButton">Buscar</button>
             </div>
-            <button id="logout-button" class="logout-button">Sair</button>
+            <button id="login-button-header" class="login-button-header">Entrar</button>
         </header>
 
         <div id="videos-container" class="videos-grid">
@@ -310,10 +279,6 @@
                 <p>Aguarde os vídeos mais virais!</p>
             </div>
         </div>
-
-        <footer class="virality-footer">
-            <p>&copy; 2025 Thiago Aggio | Powered by AI</p>
-        </footer>
     </div>
 
     <!-- Scripts do Firebase v8.10.1 (versão compatível) -->
@@ -321,6 +286,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     
     <script>
+        // Cole aqui o seu objeto firebaseConfig completo que você copiou do Firebase Console.
         // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -342,13 +308,20 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         
-        const loginSection = document.getElementById('login-section');
+        const loginModal = document.getElementById('login-modal');
+        const loginBox = document.querySelector('.login-box');
         const contentSection = document.getElementById('content-section');
+        const searchInput = document.getElementById('searchInput');
+        const maxResultsInput = document.getElementById('maxResultsInput');
+        const searchButton = document.getElementById('searchButton');
         const messageDiv = document.getElementById('message');
-
+        const loginButtonHeader = document.getElementById('login-button-header');
+        const videosContainer = document.getElementById('videos-container');
+        
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
         const toggleButton = document.getElementById('toggle-form');
@@ -356,23 +329,47 @@ const analytics = getAnalytics(app);
         const formSubtitle = document.getElementById('form-subtitle');
         const loginButton = document.getElementById('login-button');
         const registerButton = document.getElementById('register-button');
-        const googleLoginButton = document.getElementById('google-login-button'); // Novo botão
+        const googleLoginButton = document.getElementById('google-login-button');
 
-        const logoutButton = document.getElementById('logout-button');
-        
-        // Novo provedor de autenticação do Google
         const googleProvider = new firebase.auth.GoogleAuthProvider();
 
+        const showLoginModal = () => {
+            loginModal.classList.remove('hidden');
+            document.body.style.filter = 'blur(5px)';
+        };
+
+        const hideLoginModal = () => {
+            loginModal.classList.add('hidden');
+            document.body.style.filter = 'none';
+        };
+
+        loginButtonHeader.addEventListener('click', showLoginModal);
+        
         auth.onAuthStateChanged(user => {
             if (user) {
-                loginSection.classList.add('hidden');
-                contentSection.classList.remove('hidden');
+                // Usuário logado: esconde o login e mostra o botão de sair
+                hideLoginModal();
+                loginButtonHeader.textContent = 'Sair';
+                loginButtonHeader.removeEventListener('click', showLoginModal);
+                loginButtonHeader.addEventListener('click', async () => await auth.signOut());
             } else {
-                loginSection.classList.remove('hidden');
-                contentSection.classList.add('hidden');
+                // Usuário não logado: mostra o botão de entrar
+                loginButtonHeader.textContent = 'Entrar';
+                loginButtonHeader.removeEventListener('click', async () => await auth.signOut());
+                loginButtonHeader.addEventListener('click', showLoginModal);
+            }
+        });
+        
+        searchButton.addEventListener('click', () => {
+            if (!auth.currentUser) {
+                showLoginModal();
+                showMessage('Você precisa estar logado para usar o agente.', 'error');
+            } else {
+                fetchAndDisplayVideos(searchInput.value.trim(), maxResultsInput.value);
             }
         });
 
+        // Event Listeners para o formulário de login (mantido)
         toggleButton.addEventListener('click', () => {
             if (loginForm.classList.contains('hidden')) {
                 loginForm.classList.remove('hidden');
@@ -411,7 +408,6 @@ const analytics = getAnalytics(app);
             }
         });
         
-        // Evento para o novo botão de login com o Google
         googleLoginButton.addEventListener('click', async () => {
             try {
                 await auth.signInWithPopup(googleProvider);
@@ -421,9 +417,46 @@ const analytics = getAnalytics(app);
             }
         });
 
-        logoutButton.addEventListener('click', async () => {
-            await auth.signOut();
-        });
+        const fetchAndDisplayVideos = async (query = 'tecnologia', maxResults = 30) => {
+            videosContainer.innerHTML = `
+                <div class="video-card placeholder"><h3>Carregando ${query}...</h3><p>Preparando os vídeos mais virais!</p></div>
+                <div class="video-card placeholder"><h3>Buscando mais...</h3><p>Isso pode levar alguns segundos.</p></div>
+            `;
+
+            try {
+                const response = await fetch(`/.netlify/functions/get-trends?q=${encodeURIComponent(query)}&maxResults=${maxResults}`);
+
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP! Status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                videosContainer.innerHTML = '';
+                if (data.length === 0) {
+                    videosContainer.innerHTML = '<p class="no-data">Nenhum vídeo encontrado para este tema. Tente outro!</p>';
+                    return;
+                }
+                data.sort((a, b) => b.score - a.score);
+
+                data.forEach(video => {
+                    const card = document.createElement("div");
+                    card.classList.add("video-card");
+                    
+                    card.innerHTML = `
+                        ${video.thumbnail ? `<img src="${video.thumbnail}" alt="${video.titulo}" class="video-thumbnail">` : ''}
+                        <h3>${video.titulo}</h3>
+                        <p><strong>Visualizações:</strong> ${video.visualizacoes.toLocaleString('pt-BR')}</p>
+                        <p><strong>Curtidas:</strong> ${video.curtidas.toLocaleString('pt-BR')}</p>
+                        <p><strong>Comentários:</strong> ${video.comentarios.toLocaleString('pt-BR')}</p>
+                        <a href="${video.url}" target="_blank" rel="noopener noreferrer">Assistir no YouTube</a>
+                    `;
+                    videosContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar ou processar os dados:", error);
+                videosContainer.innerHTML = '<p class="error-message">Não foi possível carregar as tendências. Tente novamente mais tarde.</p>';
+            }
+        };
 
         function showMessage(text, type) {
             messageDiv.textContent = text;
@@ -444,8 +477,9 @@ const analytics = getAnalytics(app);
                 default: return 'Ocorreu um erro desconhecido.';
             }
         }
+        
+        fetchAndDisplayVideos();
     </script>
-    <script src="script.js"></script>
 </body>
 </html>
 
