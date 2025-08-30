@@ -206,15 +206,27 @@
     
     <script>
         // Substitua este objeto com a sua configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "SEU_API_KEY",
-            authDomain: "viralityscoutai.firebaseapp.com",
-            projectId: "viralityscoutai",
-            storageBucket: "viralityscoutai.firebasestorage.app",
-            messagingSenderId: "208703936839",
-            appId: "1:208703936839:web:64b8fc868375c4b2711462",
-            measurementId: "G-WK5VQLKRP4"
-        };
+        // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAhgHea6joJuHe4HFz5YTmF1XiGisuifz4",
+  authDomain: "viralityscoutai.firebaseapp.com",
+  projectId: "viralityscoutai",
+  storageBucket: "viralityscoutai.firebasestorage.app",
+  messagingSenderId: "208703936839",
+  appId: "1:208703936839:web:64b8fc868375c4b2711462",
+  measurementId: "G-WK5VQLKRP4"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const contentSection = document.getElementById('content-section');
@@ -301,3 +313,4 @@
     </script>
 </body>
 </html>
+
