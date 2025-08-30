@@ -1,49 +1,89 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virality Scout AI - Tendências YouTube</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virality Scout AI - Tendências YouTube</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    
-<audio id="logo-audio" src="logo-sound.mp3"></audio>
+    
+    <audio id="logo-audio" src="logo-sound.mp3"></audio>
 
-<div class="animated-logo-container">
-    <h1 class="animated-logo">Thiago Aggio</h1>
-</div>
+    <div class="animated-logo-container">
+        <h1 class="animated-logo">Thiago Aggio</h1>
+    </div>
 
-<div class="virality-scout-container">
-    <header class="virality-header">
-        <h1>🚀 Virality Scout AI 🚀</h1>
-        <p>Descobrindo o que está bombando no YouTube em tempo real!</p>
-        <div class="search-section">
-            <input type="text" id="searchInput" placeholder="Buscar vídeos por tema..." value="tecnologia">
-            <input type="number" id="maxResultsInput" placeholder="Nº de vídeos" value="30" min="5" max="50">
-            <button id="searchButton">Buscar</button>
-        </div>
-    </header>
+    <div class="virality-scout-container" style="display:none;">
+        <header class="virality-header">
+            <h1>🚀 Virality Scout AI 🚀</h1>
+            <p>Descobrindo o que está bombando no YouTube em tempo real!</p>
+            <div class="search-section">
+                <input type="text" id="searchInput" placeholder="Buscar vídeos por tema..." value="tecnologia">
+                <input type="number" id="maxResultsInput" placeholder="Nº de vídeos" value="30" min="5" max="50">
+                <button id="searchButton">Buscar</button>
+            </div>
+            <button id="logout-button" class="logout-button">Sair</button>
+        </header>
 
-    <div id="videos-container" class="videos-grid">
-        <div class="video-card placeholder">
-            <h3>Carregando tendências...</h3>
-            <p>Prepare-se para o que está por vir!</p>
-        </div>
-        <div class="video-card placeholder">
-            <h3>Carregando tendências...</h3>
-            <p>Aguarde os vídeos mais virais!</p>
-        </div>
-    </div>
+        <div id="videos-container" class="videos-grid">
+            <div class="video-card placeholder">
+                <h3>Carregando tendências...</h3>
+                <p>Prepare-se para o que está por vir!</p>
+            </div>
+            <div class="video-card placeholder">
+                <h3>Carregando tendências...</h3>
+                <p>Aguarde os vídeos mais virais!</p>
+            </div>
+        </div>
 
-    <footer class="virality-footer">
-        <p>&copy; 2025 Thiago Aggio | thiagoaggio.com</p>
-    </footer>
-</div>
+        <footer class="virality-footer">
+            <p>&copy; 2025 Thiago Aggio | Powered by AI</p>
+        </footer>
+    </div>
 
-<script src="script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAhgHea6joJuHe4HFz5YTmF1XiGisuifz4",
+            authDomain: "viralityscoutai.firebaseapp.com",
+            projectId: "viralityscoutai",
+            storageBucket: "viralityscoutai.firebasestorage.app",
+            messagingSenderId: "208703936839",
+            appId: "1:208703936839:web:64b8fc868375c4b2711462",
+            measurementId: "G-WK5VQLKRP4"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        // Mantém o site invisível até que a autenticação seja verificada
+        const mainContainer = document.querySelector('.virality-scout-container');
+        mainContainer.style.display = 'none';
+
+        // Evento para o botão de logout
+        const logoutButton = document.getElementById('logout-button');
+        if(logoutButton) {
+            logoutButton.addEventListener('click', async () => {
+                await auth.signOut();
+                window.location.href = 'login_page.html';
+            });
+        }
+        
+        // Verifica o estado de autenticação do usuário
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // Usuário está logado. Exibe o site
+                mainContainer.style.display = 'block';
+            } else {
+                // Usuário não está logado. Redireciona para a página de login.
+                window.location.href = 'login_page.html';
+            }
+        });
+    </script>
+    <script src="script.js"></script>
 </body>
 </html>
-</html>
-
