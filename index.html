@@ -280,6 +280,11 @@
 
             <button id="toggle-form">Ainda não tem uma conta? Cadastre-se</button>
             <div id="message"></div>
+            
+            <!-- Adicionando o botão de login com o Google -->
+            <button id="google-login-button" style="background-color: #4285F4; color: white; margin-top: 15px;">
+                Login com Google
+            </button>
         </div>
     </div>
 
@@ -311,9 +316,9 @@
         </footer>
     </div>
 
+    <!-- Scripts do Firebase v8.10.1 (versão compatível) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js"></script>
     
     <script>
         const firebaseConfig = {
@@ -338,9 +343,13 @@
         const formSubtitle = document.getElementById('form-subtitle');
         const loginButton = document.getElementById('login-button');
         const registerButton = document.getElementById('register-button');
+        const googleLoginButton = document.getElementById('google-login-button'); // Novo botão
 
         const logoutButton = document.getElementById('logout-button');
         
+        // Novo provedor de autenticação do Google
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+
         auth.onAuthStateChanged(user => {
             if (user) {
                 loginSection.classList.add('hidden');
@@ -388,6 +397,16 @@
                 showMessage(`Erro no cadastro: ${getErrorMessage(error.code)}`, 'error');
             }
         });
+        
+        // Evento para o novo botão de login com o Google
+        googleLoginButton.addEventListener('click', async () => {
+            try {
+                await auth.signInWithPopup(googleProvider);
+                showMessage('Login com Google bem-sucedido!', 'success');
+            } catch (error) {
+                showMessage(`Erro no login com Google: ${getErrorMessage(error.code)}`, 'error');
+            }
+        });
 
         logoutButton.addEventListener('click', async () => {
             await auth.signOut();
@@ -407,6 +426,8 @@
                 case 'auth/wrong-password': return 'Senha incorreta.';
                 case 'auth/email-already-in-use': return 'Este e-mail já está em uso.';
                 case 'auth/weak-password': return 'A senha deve ter no mínimo 6 caracteres.';
+                case 'auth/account-exists-with-different-credential': return 'Já existe uma conta com este e-mail. Tente fazer login de outra forma.';
+                case 'auth/popup-closed-by-user': return 'A janela de login com Google foi fechada.';
                 default: return 'Ocorreu um erro desconhecido.';
             }
         }
@@ -414,4 +435,6 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+
 
