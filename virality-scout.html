@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -9,6 +9,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@600;800&display=swap');
 
         :root {
+            /* Cores do Tema */
             --primary-color: #6a0dad;
             --secondary-color: #ff4500;
             --accent-color: #00bcd4;
@@ -26,20 +27,31 @@
             background-color: var(--background-light);
             color: var(--text-dark);
             line-height: 1.6;
-            transition: filter 0.3s ease;
         }
-        
+
+        /* Classes para controle de visualização */
         .hidden {
             display: none !important;
         }
+        
+        .loading-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 1.5em;
+            text-align: center;
+            padding: 20px;
+        }
 
-        /* ----- Estilos da Página Principal (Conteúdo) ----- */
+        /* Estilo da Página Principal */
         .virality-scout-container {
             padding: 20px;
             max-width: 1200px;
             margin: auto;
         }
 
+        /* Cabeçalho */
         .virality-header {
             text-align: center;
             margin-bottom: 40px;
@@ -55,6 +67,12 @@
             text-shadow: 2px 2px 5px var(--shadow-color);
         }
 
+        .virality-header p {
+            font-size: 1.2em;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
         .search-section {
             display: flex;
             justify-content: center;
@@ -62,23 +80,31 @@
             margin-top: 25px;
             flex-wrap: wrap;
         }
-        
-        .search-section input, .search-section button {
+
+        .search-section input,
+        .search-section button {
             padding: 12px 18px;
             border: 2px solid var(--primary-color);
             border-radius: 8px;
             font-size: 1.1em;
         }
 
+        .search-section input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+        
         .search-section button {
             background-color: var(--secondary-color);
             color: var(--text-light);
             border: none;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
-
+        
         .search-section button:hover {
             background-color: var(--primary-color);
+            transform: translateY(-2px);
         }
 
         .videos-grid {
@@ -93,22 +119,45 @@
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 5px 15px var(--shadow-color);
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
-        
-        .video-card:hover {
-            transform: translateY(-8px);
-        }
-        
+
         .video-card h3 {
             font-family: 'Poppins', sans-serif;
             font-size: 1.6em;
             color: var(--primary-color);
             margin-top: 0;
             margin-bottom: 15px;
+        }
+        
+        .video-card p {
+            font-size: 1em;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+        
+        .video-card strong {
+            color: var(--secondary-color);
+        }
+
+        .video-card a {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--text-light);
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            align-self: flex-start;
+        }
+
+        .video-card a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
         }
 
         .video-thumbnail {
@@ -119,27 +168,11 @@
             margin-bottom: 15px;
             display: block;
         }
-        
-        .video-card a {
-            display: inline-block;
-            background-color: var(--accent-color);
-            color: var(--text-light);
-            padding: 10px 18px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 15px;
-            transition: background-color 0.3s ease;
-            align-self: flex-start;
-        }
-
-        .video-card a:hover {
-            background-color: var(--primary-color);
-        }
     </style>
 </head>
 <body>
-    <div id="content-section" class="virality-scout-container">
+    <div id="loading-spinner" class="loading-spinner"></div>
+    <div id="content-section" class="virality-scout-container hidden">
         <header class="virality-header">
             <h1>🚀 Virality Scout AI 🚀</h1>
             <p>Descobrindo o que está bombando no YouTube em tempo real!</p>
@@ -148,6 +181,7 @@
                 <input type="number" id="maxResultsInput" placeholder="Nº de vídeos" value="30" min="5" max="50">
                 <button id="searchButton">Buscar</button>
             </div>
+            <button id="logout-button" class="logout-button">Sair</button>
         </header>
 
         <div id="videos-container" class="videos-grid">
@@ -160,8 +194,110 @@
                 <p>Aguarde os vídeos mais virais!</p>
             </div>
         </div>
+
+        <footer class="virality-footer">
+            <p>&copy; 2025 Thiago Aggio | Powered by AI</p>
+        </footer>
     </div>
+
+    <!-- Scripts do Firebase v8.10.1 (versão compatível) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     
-    <script src="script.js"></script>
+    <script>
+        // Substitua este objeto com a sua configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "SEU_API_KEY",
+            authDomain: "viralityscoutai.firebaseapp.com",
+            projectId: "viralityscoutai",
+            storageBucket: "viralityscoutai.firebasestorage.app",
+            messagingSenderId: "208703936839",
+            appId: "1:208703936839:web:64b8fc868375c4b2711462",
+            measurementId: "G-WK5VQLKRP4"
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const contentSection = document.getElementById('content-section');
+        const logoutButton = document.getElementById('logout-button');
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                // Usuário logado: mostra o conteúdo
+                contentSection.classList.remove('hidden');
+                // Chama a busca por vídeos
+                fetchAndDisplayVideos();
+            } else {
+                // Usuário deslogado: redireciona para a página de login
+                window.location.href = 'login_page.html';
+            }
+        });
+
+        logoutButton.addEventListener('click', async () => {
+            await auth.signOut();
+        });
+
+        const videosContainer = document.getElementById("videos-container");
+        const searchInput = document.getElementById("searchInput");
+        const maxResultsInput = document.getElementById("maxResultsInput");
+        const searchButton = document.getElementById("searchButton");
+
+        const fetchAndDisplayVideos = async (query = 'tecnologia', maxResults = 30) => {
+            videosContainer.innerHTML = `
+                <div class="video-card placeholder"><h3>Carregando ${query}...</h3><p>Preparando os vídeos mais virais!</p></div>
+                <div class="video-card placeholder"><h3>Buscando mais...</h3><p>Isso pode levar alguns segundos.</p></div>
+            `;
+            try {
+                const response = await fetch(`/.netlify/functions/get-trends?q=${encodeURIComponent(query)}&maxResults=${maxResults}`);
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                videosContainer.innerHTML = '';
+                if (data.length === 0) {
+                    videosContainer.innerHTML = '<p class="no-data">Nenhum vídeo encontrado para este tema. Tente outro!</p>';
+                    return;
+                }
+                data.sort((a, b) => b.score - a.score);
+                data.forEach(video => {
+                    const card = document.createElement("div");
+                    card.classList.add("video-card");
+                    card.innerHTML = `
+                        ${video.thumbnail ? `<img src="${video.thumbnail}" alt="${video.titulo}" class="video-thumbnail">` : ''}
+                        <h3>${video.titulo}</h3>
+                        <p><strong>Visualizações:</strong> ${video.visualizacoes.toLocaleString('pt-BR')}</p>
+                        <p><strong>Curtidas:</strong> ${video.curtidas.toLocaleString('pt-BR')}</p>
+                        <p><strong>Comentários:</strong> ${video.comentarios.toLocaleString('pt-BR')}</p>
+                        <a href="${video.url}" target="_blank" rel="noopener noreferrer">Assistir no YouTube</a>
+                    `;
+                    videosContainer.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar ou processar os dados:", error);
+                videosContainer.innerHTML = '<p class="error-message">Não foi possível carregar as tendências. Tente novamente mais tarde.</p>';
+            }
+        };
+
+        searchButton.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            const maxResults = maxResultsInput.value;
+            if (query) {
+                fetchAndDisplayVideos(query, maxResults);
+            } else {
+                alert('Por favor, digite um tema para buscar!');
+            }
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchButton.click();
+            }
+        });
+
+        maxResultsInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchButton.click();
+            }
+        });
+    </script>
 </body>
 </html>
