@@ -223,7 +223,7 @@ body {
     color: red; /* Cor do texto alterada para vermelho */
     opacity: 0;
     transform: translateY(20px);
-    animation: fadeInMoveUp 1.5s ease-out forwards 0.5s;
+    animation: fadeInMoveUp 1.5s ease-out forwards 0.3s;
     text-shadow: 0 0 15px rgba(255, 0, 0, 0.7); /* Efeito de brilho vermelho */
 }
 
@@ -276,3 +276,4 @@ body {
         width: 100%;
     }
 }
+
