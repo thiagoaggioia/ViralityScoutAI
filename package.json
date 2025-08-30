@@ -1,6 +1,0 @@
-// netlify/functions/package.json
-{
-  "dependencies": {
-    "googleapis": "^92.0.0"
-  }
-}
