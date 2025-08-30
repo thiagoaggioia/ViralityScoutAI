@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiago Aggio - Consultoria em IA para Negócios</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #020617;
+        }
+        .hero-robot-bg {
+            background-image: linear-gradient(rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.8)), url('https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .gradient-text-glow {
+            background: linear-gradient(90deg, #60a5fa, #a78bfa, #c084fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(96, 165, 250, 0.3), 0 0 25px rgba(167, 139, 250, 0.2);
+        }
+        .gradient-text-chatbot-title {
+            background: linear-gradient(90deg, #c084fc, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(192, 132, 252, 0.4), 0 0 20px rgba(167, 139, 250, 0.3);
+        }
+        .grid-pattern-bg {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-300">
+    <header class="bg-slate-950/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 border-b border-slate-800">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white">
+                Thiago Aggio<span class="text-indigo-400">
+            </a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#inicio" class="hover:text-indigo-400 transition-colors duration-300">Início</a>
+                <a href="#servicos" class="hover:text-indigo-400 transition-colors duration-300">Serviços</a>
+                <a href="#sobre" class="hover:text-indigo-400 transition-colors duration-300">Sobre Mim</a>
+                <a href="#contato" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 px-5 rounded-lg transition-all duration-300 transform hover:scale-105">Contato</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-950 border-t border-slate-800">
+            <a href="#inicio" class="block py-3 px-6 text-center hover:bg-slate-800 transition-colors">Início</a>
+            <a href="#servicos" class="block py-3 px-6 text-center hover:bg-slate-800 transition-colors">Serviços</a>
+            <a href="#sobre" class="block py-3 px-6 text-center hover:bg-slate-800 transition-colors">Sobre Mim</a>
+            <a href="#contato" class="block py-4 px-6 text-center bg-indigo-600 text-white font-medium">Contato</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio" class="min-h-screen flex items-center hero-robot-bg pt-20">
+            <div class="container mx-auto px-6 text-center z-10">
+                <h1 class="text-4xl md:text-7xl font-black text-white leading-tight mb-4">
+                    Sua Consultoria em Tecnologia para o <span class="gradient-text-glow">Sucesso Local.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-8">
+                    Transformo negócios com Agentes de IA e automação inteligente. Soluções práticas para otimizar seu atendimento, aumentar suas vendas e preparar sua empresa para o futuro.
+                </p>
+                <a href="#contato" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-indigo-900/50 inline-block">
+                    Agende uma Análise Gratuita
+                </a>
+            </div>
+        </section>
+
+        <section id="servicos" class="py-20 bg-slate-950 grid-pattern-bg fade-in-section">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-5xl font-bold text-white">Soluções de IA para o seu Negócio</h2>
+                    <p class="text-slate-400 mt-4 text-lg">Tecnologia de ponta para resolver problemas reais.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-slate-900/50 backdrop-blur-sm p-8 rounded-xl border border-slate-800 hover:border-indigo-500 hover:shadow-2xl hover:shadow-indigo-900/50 transition-all duration-300 flex flex-col">
+                        <div class="bg-indigo-900/50 text-indigo-400 mb-6 w-16 h-16 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3m6-6h3m-3 6h3M6 12H3m6 6h.01M9 12h.01M12 12h.01M15 12h.01M12 9h.01M15 9h.01"></path></svg>
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="text-2xl font-bold text-white mb-3">Desenvolvimento de Agentes de IA</h3>
+                            <p class="text-slate-400">Crio "funcionários virtuais" para automatizar tarefas, analisar dados e otimizar processos, liberando seu tempo para focar no crescimento do seu negócio.</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/50 backdrop-blur-sm p-8 rounded-xl border border-slate-800 hover:border-indigo-500 hover:shadow-2xl hover:shadow-indigo-900/50 transition-all duration-300 flex flex-col">
+                        <div class="bg-indigo-900/50 text-indigo-400 mb-6 w-16 h-16 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="text-2xl font-bold text-white mb-3">Chatbots Inteligentes</h3>
+                            <p class="text-slate-400">Ofereça atendimento ao cliente 24/7, qualifique leads e agende serviços automaticamente. Um chatbot que entende e resolve as necessidades dos seus clientes.</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900/50 backdrop-blur-sm p-8 rounded-xl border border-slate-800 hover:border-indigo-500 hover:shadow-2xl hover:shadow-indigo-900/50 transition-all duration-300 flex flex-col">
+                        <div class="bg-indigo-900/50 text-indigo-400 mb-6 w-16 h-16 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <div class="flex-grow">
+                            <h3 class="text-2xl font-bold text-white mb-3">Automação de Processos</h3>
+                            <p class="text-slate-400">Identifico gargalos e tarefas repetitivas na sua operação e implemento automações que economizam tempo, reduzem erros e aumentam a produtividade da sua equipe.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col items-center mt-12 text-center">
+                    <h3 class="text-3xl md:text-4xl font-black gradient-text-chatbot-title mb-6">
+                        Soluções de Consultoria
+                    </h3>
+                    <p class="text-slate-400 mb-6 max-w-2xl">
+                        Acesse nossas ferramentas e protótipos de IA para entender como podemos transformar seu negócio.
+                    </p>
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <a href="https://procuradoria-da-mulher-cvj.onrender.com/" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-indigo-900/50 inline-block">
+                            Acesse a Assistente Virtual
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sobre" class="py-20 bg-slate-900/50 fade-in-section">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/3">
+                        <img src="foto-perfil.png?v=1.1" 
+                             alt="Foto de Thiago Aggio, consultor de IA" 
+                             class="rounded-full w-64 h-64 md:w-80 md:h-80 mx-auto object-cover border-4 border-indigo-500 shadow-2xl shadow-indigo-900/60">
+                    </div>
+                    <div class="md:w-2/3 text-center md:text-left">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Uma Trajetória Única, Focada em Resultados</h2>
+                        <p class="text-slate-300 mb-4 text-lg">
+                            Minha jornada une o universo do Direito à vanguarda da tecnologia. Sou <strong class="text-indigo-400 font-semibold">formado em Direito com especialização em Direito Digital</strong>, o que me confere uma visão estratégica para implementar tecnologias de forma segura e eficiente.
+                        </p>
+                        <p class="text-slate-300 mb-4 text-lg">
+                            Como <strong class="text-indigo-400 font-semibold">freelancer, entusiasta de Inteligência Artificial e com inglês fluente</strong>, dedico-me a traduzir o potencial da IA em soluções práticas que impulsionam o comércio local. Minha missão é ajudar seu negócio a inovar, crescer e se destacar no mercado.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato" class="py-20 bg-slate-950 grid-pattern-bg fade-in-section">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-5xl font-bold text-white">Vamos Conversar?</h2>
+                    <p class="text-slate-400 mt-4 text-lg">Envie sua mensagem e descubra como a IA pode transformar seu negócio.</p>
+                </div>
+                <div class="max-w-2xl mx-auto bg-slate-900/50 border border-slate-800 rounded-xl p-8">
+                    <form action="https://formspree.io/f/xeolqpbk" method="POST" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-slate-300 mb-1">Seu Nome</label>
+                            <input type="text" name="name" id="name" required class="mt-1 block w-full bg-slate-800 border border-slate-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-slate-300 mb-1">Seu E-mail</label>
+                            <input type="email" name="email" id="email" required class="mt-1 block w-full bg-slate-800 border border-slate-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"></input>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-slate-300 mb-1">Mensagem</label>
+                            <textarea name="message" id="message" rows="4" required class="mt-1 block w-full bg-slate-800 border border-slate-700 rounded-md shadow-sm py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"></textarea>
+                        </div>
+                        <div class="text-center pt-4">
+                            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-indigo-900/50">
+                                Enviar Mensagem
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-950 border-t border-slate-800">
+        <div class="container mx-auto px-6 py-8 text-center text-slate-400">
+            <p>&copy; 2025 Thiago Aggio. Todos os direitos reservados.</p>
+            <p class="text-sm mt-1">Sua consultoria em tecnologia para o sucesso local.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Lógica para o menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Lógica para animação de fade-in ao rolar
+        const sections = document.querySelectorAll('.fade-in-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>    
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
