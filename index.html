@@ -3,19 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virality Scout AI - Tendências YouTube</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+    <title>Virality Scout AI - Thiago Aggio</title>
+    <style>
+        /* Importação das fontes do Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@600;800&display=swap');
+
+        :root {
+            /* Cores do Tema */
+            --primary-color: #6a0dad;
+            --secondary-color: #ff4500;
+            --accent-color: #00bcd4;
+            --text-dark: #2c3e50;
+            --text-light: #ecf0f1;
+            --background-light: #f4f7f6;
+            --card-bg: #ffffff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Classes para controle de visualização */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Estilo da Página de Login */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background-color: var(--background-light);
+        }
+
+        .login-box {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        .login-box h1 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary-color);
+            font-size: 2.5em;
+        }
+
+        .login-box p {
+            color: var(--text-dark);
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-box button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-box button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        #message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .error {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+
+        .success {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        /* Estilo da Página Principal */
+        .virality-scout-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* Cabeçalho */
+        .virality-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        .virality-header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.5em;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 5px var(--shadow-color);
+        }
+
+        .virality-header p {
+            font-size: 1.2em;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .search-section {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .search-section input,
+        .search-section button {
+            padding: 12px 18px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+
+        .search-section input:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+        }
+        
+        .search-section button {
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        .search-section button:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .video-card {
+            background-color: var(--background-light);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .video-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6em;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        
+        .video-card p {
+            font-size: 1em;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+        
+        .video-card strong {
+            color: var(--secondary-color);
+        }
+
+        .video-card a {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--text-light);
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+            align-self: flex-start;
+        }
+
+        .video-card a:hover {
+            background-color: var(--primary-color);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: block;
+        }
+    </style>
 </head>
 <body>
-    
-    <audio id="logo-audio" src="logo-sound.mp3"></audio>
+    <div id="loading-spinner" class="loading-spinner"></div>
+    <div id="login-section" class="login-container hidden">
+        <div class="login-box">
+            <h1 id="form-title">Faça Login</h1>
+            <p id="form-subtitle">Bem-vindo(a) de volta ao Virality Scout AI!</p>
+            
+            <div id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="seuemail@exemplo.com">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Senha</label>
+                    <input type="password" id="login-password" placeholder="Sua senha">
+                </div>
+                <button id="login-button">Entrar</button>
+            </div>
 
-    <div class="animated-logo-container">
-        <h1 class="animated-logo">Thiago Aggio</h1>
+            <div id="register-form" class="hidden">
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" placeholder="seuemail@exemplo.com">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Senha</label>
+                    <input type="password" id="register-password" placeholder="Sua senha">
+                </div>
+                <button id="register-button">Cadastrar</button>
+            </div>
+
+            <button id="toggle-form">Ainda não tem uma conta? Cadastre-se</button>
+            <div id="message"></div>
+        </div>
     </div>
 
-    <div class="virality-scout-container" style="display:none;">
+    <div id="content-section" class="virality-scout-container hidden">
         <header class="virality-header">
             <h1>🚀 Virality Scout AI 🚀</h1>
             <p>Descobrindo o que está bombando no YouTube em tempo real!</p>
@@ -43,46 +311,106 @@
         </footer>
     </div>
 
+    <!-- Scripts do Firebase -->
     <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"></script>
-    <script>
-        // Configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAhgHea6joJuHe4HFz5YTmF1XiGisuifz4",
-            authDomain: "viralityscoutai.firebaseapp.com",
-            projectId: "viralityscoutai",
-            storageBucket: "viralityscoutai.firebasestorage.app",
-            messagingSenderId: "208703936839",
-            appId: "1:208703936839:web:64b8fc868375c4b2711462",
-            measurementId: "G-WK5VQLKRP4"
-        };
 
+    <!-- Script de Autenticação e Lógica -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "SEU_API_KEY", // Substitua pelas suas chaves
+            authDomain: "SEU_AUTH_DOMAIN",
+            projectId: "SEU_PROJECT_ID",
+            storageBucket: "SEU_STORAGE_BUCKET",
+            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         
-        // Mantém o site invisível até que a autenticação seja verificada
-        const mainContainer = document.querySelector('.virality-scout-container');
-        mainContainer.style.display = 'none';
+        const loginSection = document.getElementById('login-section');
+        const contentSection = document.getElementById('content-section');
+        const messageDiv = document.getElementById('message');
 
-        // Evento para o botão de logout
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const toggleButton = document.getElementById('toggle-form');
+        const formTitle = document.getElementById('form-title');
+        const formSubtitle = document.getElementById('form-subtitle');
+        const loginButton = document.getElementById('login-button');
+        const registerButton = document.getElementById('register-button');
+
         const logoutButton = document.getElementById('logout-button');
-        if(logoutButton) {
-            logoutButton.addEventListener('click', async () => {
-                await auth.signOut();
-                window.location.href = 'login_page.html';
-            });
-        }
         
-        // Verifica o estado de autenticação do usuário
         auth.onAuthStateChanged(user => {
             if (user) {
-                // Usuário está logado. Exibe o site
-                mainContainer.style.display = 'block';
+                loginSection.classList.add('hidden');
+                contentSection.classList.remove('hidden');
             } else {
-                // Usuário não está logado. Redireciona para a página de login.
-                window.location.href = 'login_page.html';
+                loginSection.classList.remove('hidden');
+                contentSection.classList.add('hidden');
             }
         });
+
+        toggleButton.addEventListener('click', () => {
+            if (loginForm.classList.contains('hidden')) {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                formTitle.textContent = 'Faça Login';
+                formSubtitle.textContent = 'Bem-vindo(a) de volta ao Virality Scout AI!';
+                toggleButton.textContent = 'Ainda não tem uma conta? Cadastre-se';
+            } else {
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+                formTitle.textContent = 'Crie sua Conta';
+                formSubtitle.textContent = 'Comece a usar o Virality Scout AI agora!';
+                toggleButton.textContent = 'Já tem uma conta? Faça login';
+            }
+        });
+
+        loginButton.addEventListener('click', async () => {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showMessage('Login bem-sucedido!', 'success');
+            } catch (error) {
+                showMessage(`Erro no login: ${getErrorMessage(error.code)}`, 'error');
+            }
+        });
+
+        registerButton.addEventListener('click', async () => {
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            try {
+                await auth.createUserWithEmailAndPassword(email, password);
+                showMessage('Cadastro bem-sucedido!', 'success');
+            } catch (error) {
+                showMessage(`Erro no cadastro: ${getErrorMessage(error.code)}`, 'error');
+            }
+        });
+
+        logoutButton.addEventListener('click', async () => {
+            await auth.signOut();
+        });
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = '';
+            messageDiv.classList.add(type);
+            messageDiv.style.display = 'block';
+        }
+
+        function getErrorMessage(errorCode) {
+            switch (errorCode) {
+                case 'auth/invalid-email': return 'Endereço de e-mail inválido.';
+                case 'auth/user-not-found': return 'Usuário não encontrado.';
+                case 'auth/wrong-password': return 'Senha incorreta.';
+                case 'auth/email-already-in-use': return 'Este e-mail já está em uso.';
+                case 'auth/weak-password': return 'A senha deve ter no mínimo 6 caracteres.';
+                default: return 'Ocorreu um erro desconhecido.';
+            }
+        }
     </script>
     <script src="script.js"></script>
 </body>
