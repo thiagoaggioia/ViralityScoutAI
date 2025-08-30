@@ -200,4 +200,77 @@ body {
     .virality-header h1 {
         font-size: 2em;
     }
+
+}
+/* Seção de Busca */
+.search-section {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap; /* Para responsividade */
+}
+
+.search-section input[type="text"],
+.search-section input[type="number"] {
+    padding: 12px 18px;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    font-size: 1.1em;
+    width: 300px;
+    max-width: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.search-section input:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 8px rgba(var(--secondary-color-rgb), 0.3);
+    outline: none;
+}
+
+.search-section button {
+    background-color: var(--secondary-color);
+    color: var(--text-light);
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.search-section button:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+/* Adicione também um estilo para a thumbnail do vídeo */
+.video-thumbnail {
+    width: 100%;
+    height: 180px; /* Altura fixa para as thumbnails */
+    object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: block; /* Para remover espaços extras */
+}
+
+@media (max-width: 768px) {
+    .search-section input[type="text"],
+    .search-section input[type="number"] {
+        width: 100%; /* Ocupa a largura total em telas menores */
+    }
+}
+
+@media (max-width: 480px) {
+    .virality-scout-container {
+        margin: 10px auto;
+    }
+    .virality-header h1 {
+        font-size: 2em;
+    }
+    .search-section input[type="text"] {
+      width: 100%;
+    }
 }
