@@ -13,27 +13,29 @@
         <header class="virality-header">
             <h1>🚀 Virality Scout AI 🚀</h1>
             <p>Descobrindo o que está bombando no YouTube em tempo real!</p>
+            <div class="search-section">
+                <input type="text" id="searchInput" placeholder="Buscar vídeos por tema..." value="tecnologia">
+                <input type="number" id="maxResultsInput" placeholder="Nº de vídeos" value="30" min="5" max="50">
+                <button id="searchButton">Buscar</button>
+            </div>
         </header>
 
         <div id="videos-container" class="videos-grid">
             <div class="video-card placeholder">
                 <h3>Carregando tendências...</h3>
                 <p>Prepare-se para o que está por vir!</p>
-                <div class="score-badge placeholder-score">--</div>
             </div>
             <div class="video-card placeholder">
                 <h3>Carregando tendências...</h3>
                 <p>Aguarde os vídeos mais virais!</p>
-                <div class="score-badge placeholder-score">--</div>
             </div>
-            </div>
+        </div>
 
         <footer class="virality-footer">
-            <p>&copy; THIAGO "MONSTER" AGGIO</p>
+            <p>&copy; 2023 Thiago Aggio | Powered by AI</p>
         </footer>
     </div>
 
     <script src="script.js"></script>
 </body>
-
 </html>
