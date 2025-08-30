@@ -1,35 +1,49 @@
 const { google } = require('googleapis');
-const { videos } = google.youtube('v3');
 
 exports.handler = async (event, context) => {
     try {
         const apiKey = process.env.YOUTUBE_API_KEY;
-
-        // Extrai os parâmetros da requisição
-        // event.queryStringParameters contém os parâmetros da URL
-        const query = event.queryStringParameters.q || 'tendências'; // Tema da busca (padrão: 'tendências')
-        const maxResults = parseInt(event.queryStringParameters.maxResults) || 30; // Número de vídeos (padrão: 30)
-
-        // Limita o maxResults para não estourar a cota da API (YouTube permite no máximo 50 por requisição)
-        const finalMaxResults = Math.min(maxResults, 50);
-
-        // Faz a requisição à API do YouTube
-        const response = await videos.list({
-            key: apiKey,
-            part: 'snippet,statistics',
-            q: query, // Usamos 'q' para buscar por termo
-            type: 'video', // Garante que só buscaremos vídeos
-            regionCode: 'BR', // Continua buscando no Brasil
-            maxResults: finalMaxResults,
-            order: 'viewCount', // Ordena por visualizações para encontrar os mais populares do tema
+        const youtube = google.youtube({
+            version: 'v3',
+            auth: apiKey
         });
 
-        const videosAnalyzed = response.data.items.map(video => {
+        // Extrai os parâmetros da requisição
+        const query = event.queryStringParameters.q || 'tecnologia';
+        const maxResults = parseInt(event.queryStringParameters.maxResults) || 30;
+        const finalMaxResults = Math.min(maxResults, 50);
+
+        // --- PASSO 1: Busca os vídeos por tema usando 'search.list' ---
+        const searchResponse = await youtube.search.list({
+            q: query,
+            part: 'snippet',
+            type: 'video',
+            regionCode: 'BR',
+            maxResults: finalMaxResults,
+            order: 'viewCount'
+        });
+
+        const videoIds = searchResponse.data.items.map(item => item.id.videoId);
+
+        if (videoIds.length === 0) {
+            return {
+                statusCode: 200,
+                body: JSON.stringify([]),
+                headers: { 'Content-Type': 'application/json' },
+            };
+        }
+
+        // --- PASSO 2: Obtém as estatísticas para cada vídeo usando 'videos.list' ---
+        const videosResponse = await youtube.videos.list({
+            part: 'snippet,statistics',
+            id: videoIds.join(','),
+        });
+
+        const videosAnalyzed = videosResponse.data.items.map(video => {
             const visualizacoes = parseInt(video.statistics.viewCount) || 0;
             const curtidas = parseInt(video.statistics.likeCount) || 0;
             const comentarios = parseInt(video.statistics.commentCount) || 0;
 
-            // Lógica de cálculo da pontuação de viralidade (mantida)
             const score = (curtidas * 2 + comentarios) * Math.log10(visualizacoes + 1);
 
             return {
@@ -39,7 +53,7 @@ exports.handler = async (event, context) => {
                 curtidas: curtidas,
                 comentarios: comentarios,
                 score: parseFloat(score.toFixed(2)),
-                thumbnail: video.snippet.thumbnails.high.url // Adiciona a thumbnail do vídeo
+                thumbnail: video.snippet.thumbnails.high.url
             };
         });
 
@@ -56,7 +70,8 @@ exports.handler = async (event, context) => {
         console.error('Erro ao buscar ou processar dados:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: 'Falha ao buscar as tendências do YouTube.' }),
+            body: JSON.stringify({ error: `Falha ao buscar as tendências do YouTube. Erro: ${error.message}` }),
+            headers: { 'Content-Type': 'application/json' }
         };
     }
 };
