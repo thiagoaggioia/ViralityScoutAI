@@ -213,7 +213,7 @@ body {
     left: 0;
     background-color: var(--background-dark);
     z-index: 9999;
-    animation: fadeOutContainer 1.5s ease-in-out forwards 5s;
+    animation: fadeOutContainer 1.5s ease-in-out forwards 3s;
 }
 
 .animated-logo {
@@ -276,4 +276,5 @@ body {
         width: 100%;
     }
 }
+
 
