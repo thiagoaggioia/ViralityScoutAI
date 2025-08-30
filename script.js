@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("searchInput");
     const maxResultsInput = document.getElementById("maxResultsInput");
     const searchButton = document.getElementById("searchButton");
+    
+    const audio = document.getElementById("logo-audio");
+    audio.play();
 
     // Função para buscar e exibir os vídeos
     const fetchAndDisplayVideos = async (query = 'tecnologia', maxResults = 30) => {
@@ -53,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     searchButton.addEventListener('click', () => {
         const query = searchInput.value.trim();
         const maxResults = maxResultsInput.value;
-        if (query) { // Só busca se houver um termo
+        if (query) { // Só busca se houver um tema
             fetchAndDisplayVideos(query, maxResults);
         } else {
             alert('Por favor, digite um tema para buscar!');
@@ -74,5 +77,3 @@ document.addEventListener("DOMContentLoaded", () => {
     // Chama a função pela primeira vez ao carregar a página com um tema padrão
     fetchAndDisplayVideos();
 });
-
-
