@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const videosContainer = document.getElementById("videos-container");
 
-    fetch("tendencias.json")
+    fetch("/.netlify/functions/get-trends")
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erro HTTP! Status: ${response.status}`);
