@@ -28,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <p><strong>Curtidas:</strong> ${video.curtidas.toLocaleString('pt-BR')}</p>
                     <p><strong>Comentários:</strong> ${video.comentarios.toLocaleString('pt-BR')}</p>
                     <a href="${video.url}" target="_blank" rel="noopener noreferrer">Assistir no YouTube</a>
-                    <div class="score-badge">${video.score}</div>
                 `;
                 videosContainer.appendChild(card);
             });
@@ -38,3 +37,4 @@ document.addEventListener("DOMContentLoaded", () => {
             videosContainer.innerHTML = '<p class="error-message">Não foi possível carregar as tendências. Tente novamente mais tarde.</p>';
         });
 });
+
